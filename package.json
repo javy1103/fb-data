@@ -5,7 +5,18 @@
   "scripts": {
     "dev": "nodemon --watch app --watch bootstrap --watch config --watch .env -x \"node --harmony_proxies\" server.js",
     "start": "node --harmony_proxies server.js",
-    "lint": "standard"
+    "lint": "standard",
+    "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o public/assets/js/build.js",
+    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o public/assets/css/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > public/assets/js/build.js"
+  },
+  "browserify": {
+    "transform": [
+      "babelify",
+      "vueify"
+    ]
+  },
+  "browser": {
+    "vue": "vue/dist/vue"
   },
   "author": "",
   "license": "MIT",
@@ -19,7 +30,10 @@
     "adonis-framework": "^3.0.5",
     "adonis-lucid": "^3.0.10",
     "adonis-middleware": "^1.0.8",
+    "pg": "^6.1.0",
+    "socket.io": "^1.5.1",
     "standard": "^8.4.0",
+    "vue": "^2.0.1",
     "youch": "^1.0.1"
   },
   "standard": {
@@ -33,6 +47,29 @@
   },
   "devDependencies": {
     "nodemon": "^1.11.0",
-    "standard": "^8.5.0"
+    "pg": "^6.1.0",
+    "standard": "^8.5.0",
+    "babel-core": "^6.0.0",
+    "babel-plugin-transform-runtime": "^6.0.0",
+    "babel-preset-es2015": "^6.0.0",
+    "babel-preset-stage-2": "^6.0.0",
+    "babel-runtime": "^6.0.0",
+    "babelify": "^7.2.0",
+    "browserify": "^13.1.0",
+    "browserify-hmr": "^0.3.1",
+    "cross-env": "^2.0.0",
+    "envify": "^3.4.1",
+    "eslint": "^3.3.0",
+    "eslint-config-standard": "^5.3.5",
+    "eslint-plugin-html": "^1.5.2",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0",
+    "jquery": "^3.1.1",
+    "less": "^2.7.1",
+    "proxyquireify": "^3.0.1",
+    "uglify-js": "^2.5.0",
+    "vue-resource": "^1.0.3",
+    "vueify": "^9.0.0",
+    "watchify": "^3.4.0"
   }
 }
