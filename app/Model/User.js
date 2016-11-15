@@ -13,16 +13,12 @@ class User extends Lucid {
         return {
             username: 'required|unique:users',
             email: 'required|email|unique:users',
-            password: 'required|confirmed',
+            password: 'required',
         }
     }
 
-    // static get visible () {
-    //     return ['username', 'email']
-    // }
-
-    apiTokens () {
-        return this.hasMany('App/Model/Token')
+    static get visible () {
+        return ['username', 'email']
     }
 
 }

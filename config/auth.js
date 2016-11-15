@@ -69,7 +69,7 @@ module.exports = {
     password: 'password',
     secret: Config.get('app.appKey'),
     options: {
-        expiresIn: 400,
+        expiresIn: 604800,
     }
   },
 
@@ -88,7 +88,8 @@ module.exports = {
   api: {
     serializer: 'Lucid',
     model: 'App/Model/Token',
-    scheme: 'api'
+    scheme: 'api',
+    expiry: '30d'
   }
 
 }

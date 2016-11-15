@@ -13,15 +13,16 @@ class UserController {
     }
 
     * store(request, response) {
-        const userData = request.only('email', 'password', 'username', 'password_confirmation')
+        const userData = request.only('email', 'password', 'username')
         const validation = yield Validator.validate(userData, User.rules)
 
         if (validation.fails()) {
             response.json(validation.messages())
             return
         }
-        const user = yield User.create(body)
-        response.json(user)
+        const user = yield User.create(userData)
+        const token = yield request.auth.generate(user)
+        response.json({user, token})
     }
 
     * show(request, response) {
@@ -45,6 +46,7 @@ class UserController {
         const password = request.input('password')
         try {
             const token = yield request.auth.attempt(email, password)
+            response.header('Set-Cookie', `access_token=${token}`)
             response.json({token})
         } catch (e) {
             response.unauthorized({error: e.message})
@@ -52,15 +54,12 @@ class UserController {
     }
 
     * profile(request, response) {
-        console.log(request.cookies());
         yield response.json(request.authUser)
     }
 
     * logout(request, response) {
-        // console.log(Object.keys(request.auth));
-        console.log(Object.keys(request.auth.config.config));
-        console.log(request.auth.config.config.session);
-        yield request.auth.revokeAll(request.authUser)
+        response.clearCookie('fb_token', '')
+        yield response.ok()
     }
 
 }

@@ -5,11 +5,11 @@
         <form class="form-signin col-md-4 col-md-offset-4">
             <div class="form-group">
                 <label for="inputEmail" class="sr-only">Email address</label>
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+                <input v-model="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
             </div>
             <div class="form-group">
                 <label for="inputPassword" class="sr-only">Password</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
             </div>
             <hr>
             <div class="form-group">
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <button @click.prevent="login" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             </div>
 
         </form>
@@ -37,6 +37,20 @@ export default {
             msg: 'Login to Your Vue.js App'
         }
     },
+
+    methods:{
+        login() {
+            $.ajax({
+                url: 'login',
+                dataType: 'json',
+                method: 'post',
+                data: {
+                    email: this.email,
+                    password: this.password
+                }
+            })
+        }
+    }
 
 
 

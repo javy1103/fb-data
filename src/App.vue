@@ -6,7 +6,7 @@
             <ul>
                 <li><a v-on:click=" currentComponent = 'Login' ">Login</a></li>
                 <li><a v-on:click=" currentComponent = 'Registration' ">Register</a></li>
-                <li><a v-on:click="showCurrent">showCurrent</a></li>
+                <li><a v-on:click="currentComponent = 'Profile' ">SHow Profile</a></li>
             </ul>
         </div>
     </div>
@@ -15,6 +15,7 @@
 <script>
 var Login = require('./components/Login.vue'),
     Registration = require('./components/Registration.vue'),
+    Profile = require('./components/Profile.vue'),
     socket = require('socket.io-client')('http://localhost:3333')
 
 export default {
@@ -23,10 +24,16 @@ export default {
 
     components: {
         Login,
-        Registration
+        Registration,
+        Profile
     },
 
-    created() {
+    mounted() {
+
+        $.ajaxSetup({
+            headers: { Authorization: `Bearer ${this.getToken()}` }
+        })
+
         socket.on('connect', () => console.log('connected over the socket'));
         socket.on('event', function(data){});
         socket.on('disconnect', function(){});
@@ -39,6 +46,11 @@ export default {
     },
 
     methods: {
+        getToken() {
+            if( document.cookie ) {
+                return document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+            }
+        },
         showCurrent() {
             console.log(this.currentComponent)
         }
