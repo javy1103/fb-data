@@ -13,8 +13,9 @@
 </template>
 
 <script>
-import Login from './components/Login.vue'
-import Registration from './components/Registration.vue'
+var Login = require('./components/Login.vue'),
+    Registration = require('./components/Registration.vue'),
+    socket = require('socket.io-client')('http://localhost:3333')
 
 export default {
 
@@ -23,6 +24,12 @@ export default {
     components: {
         Login,
         Registration
+    },
+
+    created() {
+        socket.on('connect', () => console.log('connected over the socket'));
+        socket.on('event', function(data){});
+        socket.on('disconnect', function(){});
     },
 
     data() {
@@ -40,7 +47,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-    #app {
-        color: black;
-    }
+#app {
+    color: black;
+}
 </style>

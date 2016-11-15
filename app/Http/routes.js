@@ -18,3 +18,7 @@
 const Route = use('Route')
 
 Route.on('/').render('welcome')
+Route.resources('users', 'UserController')
+Route.post('login', 'UserController.login')
+Route.get('profile', 'UserController.profile').middleware('auth:jwt')
+Route.get('logout', 'UserController.logout')

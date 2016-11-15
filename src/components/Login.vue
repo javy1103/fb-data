@@ -1,9 +1,8 @@
 <template>
-    <div id="hello" class="row">
-        <img src="http://vuejs.org/images/logo.png">
+    <div id="login" class="row">
+        <img class="logo-img" src="http://vuejs.org/images/logo.png">
         <h1>{{ msg }}</h1>
         <form class="form-signin col-md-4 col-md-offset-4">
-            <h2 class="form-signin-heading">Please sign in</h2>
             <div class="form-group">
                 <label for="inputEmail" class="sr-only">Email address</label>
                 <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
@@ -39,27 +38,27 @@ export default {
         }
     },
 
-    show() {
-        this.addClass('hidden')
-    },
-
-    hide() {
-        this.removeClass('hidden')
-    }
-
 
 
 }
 </script>
 
-<style scoped>
-#hello {
+<style scoped lang="less">
+#login {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+
+    .logo-img {
+        height: 200px;
+    }
+}
+
+h1 {
+    margin-bottom: 30px
 }
 
 h1, h2 {
