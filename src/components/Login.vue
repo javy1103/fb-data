@@ -11,6 +11,9 @@
                 <label for="inputPassword" class="sr-only">Password</label>
                 <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
             </div>
+            <div v-show="errorMessage" class="has-error">
+                <span class="help-block">{{ errorMessage }}</span>
+            </div>
             <hr>
             <div class="form-group">
                 <div class="checkbox">
@@ -34,12 +37,15 @@ export default {
 
     data () {
         return {
-            msg: 'Login to Your Vue.js App'
+            msg: 'Login to Your Vue.js App',
+            errorMessage: ''
         }
     },
 
     methods:{
+
         login() {
+            this.$delete('errorMessage')
             $.ajax({
                 url: 'login',
                 dataType: 'json',
@@ -49,6 +55,8 @@ export default {
                     password: this.password
                 }
             })
+            .done( data => { this.$emit('userAuthenticated', data) })
+            .fail( err => { this.errorMessage = err.responseText })
         }
     }
 

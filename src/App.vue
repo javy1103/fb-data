@@ -1,59 +1,77 @@
 <template>
-    <div class="container" id="app">
-        <component :is="currentComponent"></component>
-        <div>
-            <h2>Essential Links</h2>
-            <ul>
-                <li><a v-on:click=" currentComponent = 'Login' ">Login</a></li>
-                <li><a v-on:click=" currentComponent = 'Registration' ">Register</a></li>
-                <li><a v-on:click="currentComponent = 'Profile' ">SHow Profile</a></li>
-            </ul>
-        </div>
+    <div class="container-fluid" id="app">
+        <keep-alive>
+            <component :user="model" ref="currentComponent" :is="currentComponent"></component>
+        </keep-alive>
     </div>
 </template>
 
 <script>
-var Login = require('./components/Login.vue'),
-    Registration = require('./components/Registration.vue'),
-    Profile = require('./components/Profile.vue'),
-    socket = require('socket.io-client')('http://localhost:3333')
+var login = require('./components/Login.vue'),
+    registration = require('./components/Registration.vue'),
+    profile = require('./components/Profile.vue'),
+    model = require('./models/User')
 
 export default {
 
     name: 'app',
 
     components: {
-        Login,
-        Registration,
-        Profile
+        login,
+        registration,
+        profile
     },
 
     mounted() {
 
-        $.ajaxSetup({
-            headers: { Authorization: `Bearer ${this.getToken()}` }
+        this.setToken()
+        .then( () => this.getUser() )
+        .catch( err => console.log(err) )
+
+        this.$refs.currentComponent.$on( 'userAuthenticated', data => {
+            this.setToken()
+            .then( () => {
+                model.set(data)
+                this.currentComponent = 'profile'
+            })
         })
 
-        socket.on('connect', () => console.log('connected over the socket'));
-        socket.on('event', function(data){});
-        socket.on('disconnect', function(){});
     },
 
     data() {
         return {
-            currentComponent: 'Login'
+            model,
+            currentComponent: 'login'
         }
     },
 
     methods: {
-        getToken() {
-            if( document.cookie ) {
-                return document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-            }
+
+        // TODO: invalidate token, remove from cookies and ajaxSetup
+
+        getUser() {
+            return new Promise( (resolve, reject) => {
+                $.get('/profile')
+                .done( response => {
+                    model.set(response)
+                    this.currentComponent = 'profile'
+                    resolve()
+                })
+                .fail( err => reject(err) )
+            })
         },
-        showCurrent() {
-            console.log(this.currentComponent)
-        }
+
+        setToken() {
+            return new Promise( (resolve, reject) => {
+                let token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+                $.ajaxSetup({
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                if( !token ) reject()
+                resolve()
+            })
+        },
+
     }
 }
 </script>
