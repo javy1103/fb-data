@@ -18,7 +18,16 @@
 const Route = use('Route')
 
 Route.on('/').render('welcome')
-Route.resources('users', 'UserController')
-Route.post('login', 'UserController.login')
-Route.get('profile', 'UserController.profile').middleware('auth:jwt')
-Route.get('logout', 'UserController.logout').middleware('auth:jwt')
+// Route.any('*', function * (request, response) {
+//   yield response.sendView('welcome')
+// })
+
+Route.group('authenticated', function() {
+    Route.resources('users', 'UserController').except('create', 'store')
+    Route.get('profile', 'UserController.profile')
+}).middleware('auth')
+
+Route.post('login', 'AuthController.login')
+Route.post('register', 'AuthController.register')
+Route.post('auth', 'AuthController.check')
+Route.delete('logout', 'AuthController.logout')

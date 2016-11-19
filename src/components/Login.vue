@@ -1,18 +1,18 @@
 <template>
-    <div id="login" class="row">
+    <div id="login">
         <img class="logo-img" src="http://vuejs.org/images/logo.png">
         <h1>{{ msg }}</h1>
-        <form class="form-signin col-md-4 col-md-offset-4">
+        <form class="form-signin col-md-2 col-md-offset-5">
             <div class="form-group">
                 <label for="inputEmail" class="sr-only">Email address</label>
-                <input v-model="email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+                <input v-model="credentials.email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
             </div>
             <div class="form-group">
                 <label for="inputPassword" class="sr-only">Password</label>
-                <input v-model="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+                <input v-model="credentials.password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
             </div>
-            <div v-show="errorMessage" class="has-error">
-                <span class="help-block">{{ errorMessage }}</span>
+            <div v-show="error" class="has-error">
+                <span class="help-block">{{ error }}</span>
             </div>
             <hr>
             <div class="form-group">
@@ -23,14 +23,18 @@
                 </div>
             </div>
             <div class="form-group">
-                <button @click.prevent="login" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <button @click.prevent="submit" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             </div>
+            <span class="help-block">Dont have an account? <router-link to="/register">Register</router-link></span>
 
         </form>
     </div>
 </template>
 
 <script>
+
+var auth = require('../auth')
+
 export default {
 
     name: 'login',
@@ -38,25 +42,28 @@ export default {
     data () {
         return {
             msg: 'Login to Your Vue.js App',
-            errorMessage: ''
+            error: '',
+            credentials: {
+                email: null,
+                password: null
+            }
         }
     },
 
-    methods:{
+    mounted() {
+        var ph = $(this.$el).parent().outerHeight(true),
+            height = $(this.$el).outerHeight(true) / 3,
+            center = ph - height
 
-        login() {
-            this.$delete('errorMessage')
-            $.ajax({
-                url: 'login',
-                dataType: 'json',
-                method: 'post',
-                data: {
-                    email: this.email,
-                    password: this.password
-                }
-            })
-            .done( data => { this.$emit('userAuthenticated', data) })
-            .fail( err => { this.errorMessage = err.responseText })
+        $(this.$el).css({
+            'margin-top': center
+        })
+    },
+
+    methods:{
+        submit() {
+            this.error = ''
+            auth.login(this, this.credentials, '/profile')
         }
     }
 

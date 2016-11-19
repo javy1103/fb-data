@@ -14,15 +14,15 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.get('name') }} <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.name }} <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
+                                <li><a href="#"></a></li>
                                 <li><a href="#">Another action</a></li>
                                 <li><a href="#">Something else here</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li class="dropdown-header">Nav header</li>
                                 <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
+                                <li><a @click.prevent="logout">Logout</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -43,17 +43,49 @@
 
 <script>
 
-var socket = require('socket.io-client')('http://localhost:3333')
+var socket = require('socket.io-client')('http://localhost:3333'),
+    auth = require('../auth')
 
 export default {
 
-    props: ['user'],
+    beforeRouteEnter(to, from, next) {
+
+        if (!auth.user.authenticated) {
+            next({
+                path: '/login'
+            })
+        }
+        next()
+    },
 
     data() {
         return {
-            
+            user: {
+                name: null,
+                email: null,
+                id: null,
+                username: null
+            }
         }
-    }
+    },
+
+    created() {
+        this.fetchUser()
+    },
+
+    methods: {
+
+        fetchUser() {
+            $.get('profile')
+            .done( user => { this.user = user })
+            .fail( err => console.log(err) )
+        },
+
+        logout() {
+            auth.logout()
+            this.$router.push('login')
+        }
+    },
 
 }
 </script>
@@ -62,6 +94,12 @@ export default {
 .profile {
     .content {
         margin-top: 70px;
+    }
+
+    li {
+        a {
+            cursor: pointer;
+        }
     }
 }
 </style>

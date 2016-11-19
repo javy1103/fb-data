@@ -1,83 +1,50 @@
 <template>
-    <div class="container-fluid" id="app">
-        <keep-alive>
-            <component :user="model" ref="currentComponent" :is="currentComponent"></component>
-        </keep-alive>
+    <div id="app">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Project name</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <router-link tag="li" to="/login">
+                            <a>Login</a>
+                        </router-link>
+                        <router-link tag="li" to="/register">
+                            <a>Sign Up</a>
+                        </router-link>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
-var login = require('./components/Login.vue'),
-    registration = require('./components/Registration.vue'),
-    profile = require('./components/Profile.vue'),
-    model = require('./models/User')
 
 export default {
 
     name: 'app',
 
-    components: {
-        login,
-        registration,
-        profile
-    },
-
-    mounted() {
-
-        this.setToken()
-        .then( () => this.getUser() )
-        .catch( err => console.log(err) )
-
-        this.$refs.currentComponent.$on( 'userAuthenticated', data => {
-            this.setToken()
-            .then( () => {
-                model.set(data)
-                this.currentComponent = 'profile'
-            })
-        })
-
-    },
-
-    data() {
-        return {
-            model,
-            currentComponent: 'login'
-        }
-    },
-
-    methods: {
-
-        // TODO: invalidate token, remove from cookies and ajaxSetup
-
-        getUser() {
-            return new Promise( (resolve, reject) => {
-                $.get('/profile')
-                .done( response => {
-                    model.set(response)
-                    this.currentComponent = 'profile'
-                    resolve()
-                })
-                .fail( err => reject(err) )
-            })
-        },
-
-        setToken() {
-            return new Promise( (resolve, reject) => {
-                let token = document.cookie.replace(/(?:(?:^|.*;\s*)access_token\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-                $.ajaxSetup({
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-                if( !token ) reject()
-                resolve()
-            })
-        },
-
-    }
 }
 </script>
 
 <style scoped lang="less">
+
+html, body {
+    height: 100%;
+}
+
 #app {
     color: black;
+    height: 100%;
 }
 </style>

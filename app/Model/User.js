@@ -9,10 +9,6 @@ class User extends Lucid {
         this.addHook('beforeCreate', 'User.encryptPassword')
     }
 
-    static get primaryKey () {
-        return 'username'
-    }
-
     static get rules () {
         return {
             username: 'required|unique:users',
@@ -23,7 +19,7 @@ class User extends Lucid {
     }
 
     static get visible () {
-        return ['name', 'username', 'email']
+        return ['id', 'name', 'username', 'email']
     }
 
 }
