@@ -10,7 +10,7 @@ class AuthController {
         const password = request.input('password')
         try {
             const token = yield request.auth.attempt(email, password)
-            yield response.json({token})
+            response.json({token})
         } catch (e) {
             response.unauthorized({message: 'Invalid login credentials'})
         }
@@ -19,11 +19,6 @@ class AuthController {
     * logout(request, response) {
         response.clearCookie('access_token')
         response.ok()
-    }
-
-    * check(request, response) {
-        const isLoggedIn = yield request.auth.check()
-        isLoggedIn ? response.ok() : response.unauthorized()
     }
 
     * register(request, response) {

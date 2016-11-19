@@ -38,13 +38,12 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
 
 var socket = require('socket.io-client')('http://localhost:3333'),
-    auth = require('../auth')
+auth = require('../auth')
 
 export default {
 
@@ -54,6 +53,7 @@ export default {
             next({
                 path: '/login'
             })
+            return
         }
         next()
     },
@@ -76,7 +76,7 @@ export default {
     methods: {
 
         fetchUser() {
-            $.get('profile')
+            $.get('/api/profile')
             .done( user => { this.user = user })
             .fail( err => console.log(err) )
         },
@@ -91,6 +91,15 @@ export default {
 </script>
 
 <style lang="less">
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s
+}
+
+.fade-enter, .fade-leave-active {
+    opacity: 0
+}
+
 .profile {
     .content {
         margin-top: 70px;

@@ -25,7 +25,7 @@ Http.handleError = function * (error, request, response) {
             new Ouch.handlers.PrettyPageHandler('blue', null, 'sublime')
         )
         ouch.handleException(error, request.request, response.response, (output) => {
-            console.error(error.stack)
+            console.error(error)
         })
         return
     }

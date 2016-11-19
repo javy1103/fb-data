@@ -1,4 +1,5 @@
 <template>
+    <transition name="fade" mode="out-in">
     <div id="registration">
         <img src="http://vuejs.org/images/logo.png">
         <h1>{{ msg }}</h1>
@@ -60,7 +61,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+
 #registration {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -68,23 +70,10 @@ export default {
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+
+    > img {
+        height: 200px;
+    }
 }
 
-h1, h2 {
-    font-weight: normal;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    display: inline-block;
-    margin: 0 10px;
-}
-
-a {
-    color: #42b983;
-}
 </style>

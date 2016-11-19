@@ -1,6 +1,6 @@
 // URL and endpoint constants
-const LOGIN_URL = 'login'
-const SIGNUP_URL = 'register'
+const LOGIN_URL = 'api/login'
+const SIGNUP_URL = 'api/register'
 
 module.exports = {
 

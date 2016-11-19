@@ -1,6 +1,6 @@
 <template>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-fixed-top">
+    <div id="app" class="container-fluid">
+        <nav v-if="!user.authenticated" class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -23,21 +23,45 @@
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
-
-        <router-view></router-view>
+        <transition name="slide-fade" mode="out-in">
+            <router-view></router-view>
+        </transition>
     </div>
 </template>
 
 <script>
 
+var auth = require('./auth')
+
 export default {
 
     name: 'app',
+
+    data() {
+        return {
+            user: null
+        }
+    },
+
+    created() {
+        this.user = auth.user
+    }
 
 }
 </script>
 
 <style scoped lang="less">
+
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-active {
+  padding-left: 150px;
+  opacity: 0;
+}
 
 html, body {
     height: 100%;

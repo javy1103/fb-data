@@ -6,7 +6,7 @@ var Vue = require('vue'),
     App = require('./App.vue'),
     Login = require('./components/Login.vue'),
     Register = require('./components/Registration.vue'),
-    Profile = require('./components/Profile.vue'),
+    Home = require('./components/Home.vue'),
     auth = require('./auth')
 
 window.jQuery = window.$ = require('jquery')
@@ -16,7 +16,7 @@ Vue.use(VueRouter)
 const routes = [
     { path: '/login', component: Login },
     { path: '/register', component: Register },
-    { path: '/profile', component: Profile, meta: { requiresAuth: true } }
+    { path: '/home', component: Home }
 ]
 
 const router = new VueRouter({
@@ -31,8 +31,8 @@ new Vue({
   render: h => h(App)
 })
 
-$.ajaxSetup({ headers: auth.getAuthHeader() })
-
-auth.checkAuth()
-
-router.push('profile')
+auth.setAuthHeader()
+.then( () => {
+    auth.checkAuth()
+    router.push('home')
+})

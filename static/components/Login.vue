@@ -2,7 +2,7 @@
     <div id="login">
         <img class="logo-img" src="http://vuejs.org/images/logo.png">
         <h1>{{ msg }}</h1>
-        <form class="form-signin col-md-2 col-md-offset-5">
+        <form class="form-signin col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
             <div class="form-group">
                 <label for="inputEmail" class="sr-only">Email address</label>
                 <input v-model="credentials.email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
@@ -50,20 +50,10 @@ export default {
         }
     },
 
-    mounted() {
-        var ph = $(this.$el).parent().outerHeight(true),
-            height = $(this.$el).outerHeight(true) / 3,
-            center = ph - height
-
-        $(this.$el).css({
-            'margin-top': center
-        })
-    },
-
     methods:{
         submit() {
             this.error = ''
-            auth.login(this, this.credentials, '/profile')
+            auth.login(this, this.credentials, '/home')
         }
     }
 
@@ -73,6 +63,7 @@ export default {
 </script>
 
 <style scoped lang="less">
+
 #login {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

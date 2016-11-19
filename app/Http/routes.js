@@ -18,16 +18,18 @@
 const Route = use('Route')
 
 Route.on('/').render('welcome')
-// Route.any('*', function * (request, response) {
-//   yield response.sendView('welcome')
-// })
 
-Route.group('authenticated', function() {
-    Route.resources('users', 'UserController').except('create', 'store')
+Route.group('users', function() {
+    Route.resources('users', 'UserController').except('create', 'store', 'edit')
     Route.get('profile', 'UserController.profile')
-}).middleware('auth')
+}).middleware('auth').prefix('/api')
 
-Route.post('login', 'AuthController.login')
-Route.post('register', 'AuthController.register')
-Route.post('auth', 'AuthController.check')
-Route.delete('logout', 'AuthController.logout')
+Route.group('auth', function() {
+    Route.post('login', 'AuthController.login')
+    Route.post('register', 'AuthController.register')
+    Route.delete('logout', 'AuthController.logout')
+}).prefix('/api')
+
+Route.any('*', function * (request, response) {
+  yield response.sendView('welcome')
+})
