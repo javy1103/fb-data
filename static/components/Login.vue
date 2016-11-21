@@ -1,31 +1,35 @@
 <template>
-    <div id="login">
+    <div id="login" class="uk-width-1-2 uk-container-center">
         <img class="logo-img" src="http://vuejs.org/images/logo.png">
         <h1>{{ msg }}</h1>
-        <form class="form-signin col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
-            <div class="form-group">
-                <label for="inputEmail" class="sr-only">Email address</label>
-                <input v-model="credentials.email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
-            </div>
-            <div class="form-group">
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input v-model="credentials.password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
-            </div>
-            <div v-show="error" class="has-error">
-                <span class="help-block">{{ error }}</span>
-            </div>
-            <hr>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" value="remember-me"> Remember me
-                    </label>
+        <form class="uk-form uk-grid">
+
+            <div class="uk-container-center">
+
+                <div class="uk-width-1-1 uk-margin-bottom">
+                    <input v-model="credentials.email" type="email" class="uk-form-large uk-form-width-large" placeholder="Email address" required="required" autofocus="">
                 </div>
+                <div class="uk-width-1-1 uk-margin-bottom">
+                    <input v-model="credentials.password" type="password" class="uk-form-large uk-form-width-large" placeholder="Password" required="required">
+                </div>
+
+                <div v-show="error" class="has-error">
+                    <span class="help-block">{{ error }}</span>
+                </div>
+                <hr class="uk-grid-divider">
+                <div class="uk-width-1-1">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                    </div>
+                </div>
+                <div class="uk-width-1-1">
+                    <button @click.prevent="submit" class="uk-button uk-button-large uk-button-success" type="submit">Sign in</button>
+                </div>
+                <span class="help-block">Dont have an account? <router-link to="/register">Register</router-link></span>
+
             </div>
-            <div class="form-group">
-                <button @click.prevent="submit" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-            </div>
-            <span class="help-block">Dont have an account? <router-link to="/register">Register</router-link></span>
 
         </form>
     </div>

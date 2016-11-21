@@ -5,7 +5,11 @@ const SIGNUP_URL = 'api/register'
 module.exports = {
 
     user: {
-        authenticated: false
+        authenticated: false,
+        name: null,
+        username: null,
+        email: null,
+        id: null
     },
 
     login(context, creds, redirect) {

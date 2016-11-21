@@ -7,7 +7,8 @@
     "start": "node --harmony_proxies server.js",
     "lint": "standard",
     "watchify": "watchify -vd -p browserify-hmr -e static/main.js -o public/assets/js/build.js",
-    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o public/assets/css/build.css ] -e static/main.js | uglifyjs -c warnings=false -m > public/assets/js/build.js"
+    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o public/assets/css/build.css ] -e static/main.js | uglifyjs -c warnings=false -m > public/assets/js/build.js",
+    "build:css": "cat node_modules/uikit/dist/css/uikit.css node_modules/uikit/dist/css/uikit.almost-flat.css public/assets/css/build.css > public/assets/css/style.css"
   },
   "browserify": {
     "transform": [

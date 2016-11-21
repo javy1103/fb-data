@@ -11,6 +11,8 @@ var Vue = require('vue'),
 
 window.jQuery = window.$ = require('jquery')
 
+require('uikit')
+
 Vue.use(VueRouter)
 
 const routes = [
