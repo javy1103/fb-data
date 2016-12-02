@@ -2,6 +2,7 @@
 
 const Validator = use('Validator')
 const User = use('App/Model/User')
+const Group = use('App/Model/Group')
 
 class AuthController {
 
@@ -12,7 +13,7 @@ class AuthController {
             const token = yield request.auth.attempt(email, password)
             response.json({token})
         } catch (e) {
-            response.unauthorized({message: 'Invalid login credentials'})
+            response.status(401).json({message: 'Invalid login credentials'})
         }
     }
 
@@ -29,6 +30,8 @@ class AuthController {
             response.status(401).json(validation.messages())
         }
         const user = yield User.create(userData)
+        const group = yield Group.create({ name: request.input('groupName') })
+        yield group.users().save(user)
         const token = yield request.auth.generate(user)
         response.json({token})
     }

@@ -4,6 +4,10 @@ const Lucid = use('Lucid')
 
 class User extends Lucid {
 
+    group() {
+        return this.belongsTo('App/Model/Group')
+    }
+
     static boot() {
         super.boot()
         this.addHook('beforeCreate', 'User.encryptPassword')

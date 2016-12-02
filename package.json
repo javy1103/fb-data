@@ -8,7 +8,7 @@
     "lint": "standard",
     "watchify": "watchify -vd -p browserify-hmr -e static/main.js -o public/assets/js/build.js",
     "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o public/assets/css/build.css ] -e static/main.js | uglifyjs -c warnings=false -m > public/assets/js/build.js",
-    "build:css": "cat node_modules/uikit/dist/css/uikit.css node_modules/uikit/dist/css/uikit.almost-flat.css public/assets/css/build.css > public/assets/css/style.css"
+    "build:css": "cat node_modules/bootstrap/dist/css/bootstrap.min.css public/assets/css/build.css > public/assets/css/style.css"
   },
   "browserify": {
     "transform": [
@@ -56,6 +56,7 @@
     "babel-runtime": "^6.0.0",
     "babelify": "^7.2.0",
     "backbone": "^1.3.3",
+    "bootstrap": "^3.3.7",
     "browserify": "^13.1.0",
     "browserify-hmr": "^0.3.1",
     "cross-env": "^2.0.0",
@@ -73,7 +74,6 @@
     "socket.io-client": "^1.5.1",
     "standard": "^8.5.0",
     "uglify-js": "^2.5.0",
-    "uikit": "^2.27.2",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.0.3",
     "vueify": "^9.0.0",

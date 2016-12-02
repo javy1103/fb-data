@@ -9,7 +9,8 @@ module.exports = {
         name: null,
         username: null,
         email: null,
-        id: null
+        id: null,
+        userGroup: null
     },
 
     login(context, creds, redirect) {
@@ -23,7 +24,9 @@ module.exports = {
         .done( data => {
             this.onUserAuthenticated( context, data, redirect )
         })
-        .fail( err => { context.error = err.message })
+        .fail( err => {
+            context.error = err.responseJSON.message
+        })
     },
 
     signup(context, creds, redirect) {

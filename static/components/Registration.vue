@@ -3,7 +3,7 @@
     <div id="registration">
         <img src="http://vuejs.org/images/logo.png">
         <h1>{{ msg }}</h1>
-        <form class="form-signin col-md-4 col-md-offset-4" autocomplete="nope">
+        <form class="form-signin col-md-2 col-md-offset-5" autocomplete="nope">
             <div class="form-group">
                 <label for="email" class="sr-only">Email address</label>
                 <input v-model="credentials.email" type="email" id="email" class="form-control" placeholder="Email address" required="" autofocus="">
@@ -20,14 +20,20 @@
                 <label for="password" class="sr-only">Password</label>
                 <input v-model="credentials.password" type="password" id="password" class="form-control" placeholder="Password" required="">
             </div>
+            <div class="form-group">
+                <label for="userGroup" class="sr-only">Group Name</label>
+                <input v-model="credentials.userGroup" type="text" id="userGroup" class="form-control" placeholder="Group Name" required="">
+            </div>
             <div v-show="error" class="has-error">
                 <span class="help-block">{{ error }}</span>
             </div>
             <hr>
             <div class="form-group">
-                <button @click.prevent="submit" class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+                <button @click.prevent="submit" class="btn btn-success btn-block" type="submit">Register</button>
             </div>
-
+            <div class="form-group">
+                <span class="help-block">Already have an account? <router-link to="/login">Login</router-link></span>
+            </div>
         </form>
     </div>
 </template>
@@ -39,6 +45,16 @@ export default {
 
     name: 'registration',
 
+    beforeRouteEnter(to, from, next) {
+        if (auth.user.authenticated) {
+            next({
+                path: '/home'
+            })
+            return
+        }
+        next()
+    },
+
     data () {
         return {
             msg: 'Register to Your Vue.js App',
@@ -46,7 +62,8 @@ export default {
                 name: null,
                 email: null,
                 username: null,
-                password: null
+                password: null,
+                userGroup: null
             },
             error: ''
         }
@@ -73,6 +90,10 @@ export default {
 
     > img {
         height: 200px;
+    }
+
+    h1 {
+        margin-bottom: 30px
     }
 }
 

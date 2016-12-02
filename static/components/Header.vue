@@ -1,32 +1,33 @@
 <template>
-    <nav class="uk-navbar">
-        <a href="" class="uk-navbar-brand">Family Board</a>
-        <div v-if="!user.authenticated" class="uk-navbar-flip">
-            <ul class="uk-navbar-nav">
-                <router-link tag="li" class="li-login" to="/login">
-                    <a>Login</a>
-                </router-link>
-                <router-link tag="li" to="/register">
-                    <a>Sign Up</a>
-                </router-link>
-            </ul>
-        </div>
-        <div v-if="user.authenticated" class="uk-navbar-flip">
-            <ul class="uk-navbar-nav">
-                <li class="uk-parent" data-uk-dropdown="{mode: 'click'}">
-                    <a href="">{{ user.name }} <i class="uk-icon-caret-down"></i></a>
-                    <div class="uk-dropdown uk-dropdown-navbar uk-dropdown-top">
-                        <ul class="uk-nav uk-nav-navbar">
-                            <li><a href="#">Something here</a></li>
-                            <li class="uk-nav-header">Header</li>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a href="" class="navbar-brand">Family Board</a>
+            <div v-if="!user.authenticated" class="collapse navbar-collapse landing">
+                <ul class="nav navbar-nav navbar-right">
+                    <router-link tag="li" class="li-login" to="/login">
+                        <a>Login</a>
+                    </router-link>
+                    <router-link tag="li" class="li-signup" to="/register">
+                        <a>Sign Up</a>
+                    </router-link>
+                </ul>
+            </div>
+            <div v-if="user.authenticated" class="collapse navbar-collapse home">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
                             <li><a href="#">Something else here</a></li>
-                            <li class="uk-nav-divider"></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a @click.prevent="logout">Logout</a></li>
                         </ul>
-                    </div>
-
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 </template>
@@ -47,29 +48,44 @@ module.exports = {
 </script>
 
 <style lang="less" scoped>
-    nav.uk-navbar {
-        border: none;
-        padding: 10px 35px 0 35px;
-        border-radius: 0px;
+nav.navbar {
+    border: none;
+    border-radius: 0px;
+    padding: 10px 20px;
+    margin-bottom: 0px;
 
-        li {
+    li {
 
+        a {
+            color: #000000;
+            padding: 10px 15px;
+            border-color: transparent;
+            text-transform: uppercase;
+            background: none;
+            cursor: pointer;
+        }
+
+        &.li-signup {
             a {
-                border: 2px solid #36ba67;
+                border: 2px solid #ec9d55;
                 border-radius: 25px !important;
-                height: 44px;
-            }
-
-            &:hover {
-                a {
-                    background: none;
-                    border-color: #ec9d55;
-                }
-            }
-
-            &.li-login {
-                margin-right: 15px;
+                transition: color 0.8s, background-color 0.6s;
             }
         }
+
+        &:hover {
+
+            &.li-signup {
+                a {
+                    background: #ec9d55;
+                    color: #FFFFFF;
+                }
+            }
+        }
+
+        &.li-login {
+            margin-right: 15px;
+        }
     }
+}
 </style>

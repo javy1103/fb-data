@@ -1,7 +1,7 @@
 <template>
     <div id="app">
-        <app-header :user="user" v-on:logout="logout"></app-header>
-        <div class="uk-grid">
+        <app-header ref="header" :user="user" v-on:logout="logout"></app-header>
+        <div class="container-fluid app-content">
             <transition name="slide-fade" mode="out-in">
                 <router-view v-bind:user="user"></router-view>
             </transition>
@@ -22,9 +22,15 @@ export default {
     },
 
     data() {
+
         return {
             user: auth.user
         }
+    },
+
+    mounted() {
+
+        this.size()
     },
 
     methods: {
@@ -32,6 +38,12 @@ export default {
         logout() {
             auth.logout()
             this.$router.push('login')
+        },
+
+        size() {
+            $('.app-content').outerHeight(
+                ( $(this.$el).outerHeight(true) - $(this.$refs.header.$el).outerHeight(true) )
+            )
         }
     }
 

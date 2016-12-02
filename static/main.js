@@ -11,7 +11,7 @@ var Vue = require('vue'),
 
 window.jQuery = window.$ = require('jquery')
 
-require('uikit')
+require('bootstrap')
 
 Vue.use(VueRouter)
 
